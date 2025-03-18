@@ -2,6 +2,8 @@
 
 This project uses Ultralytics YOLO to detect dice, count them, and sum their values in real-time using a webcam or screen capture.
 
+https://github.com/user-attachments/assets/6add3780-97fc-426d-94da-2fd304d312ad
+
 ## Installation
 
 ### 1. Create a Virtual Environment
