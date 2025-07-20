@@ -1,6 +1,6 @@
 # Dice Recognition 🎲🤖
 
-Computer Vision project made with Python, Ultralytics YOLO and OpenCV to recognize dice, count them, and sum their values in real time using a webcam or video as input.
+Computer Vision project made with Python, YOLO and OpenCV to recognize dice, count them, and sum their values in real time using a webcam or video as input.
 
 https://github.com/user-attachments/assets/6add3780-97fc-426d-94da-2fd304d312ad
 
@@ -36,19 +36,20 @@ source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
 > For more options and compatibility information, check the [official PyTorch installation guide](https://pytorch.org/get-started/locally/).
 
 ```sh
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ## Running the Model
 
 ### Option 1: Use Pretrained Model
 
-If you want to directly run the model without training, download my pretrained model:
+The pretrained model is already included in this repository at:
 
-1. Download the pretrained model from [Releases](https://github.com/N3VERS4YDIE/dice-recognition/releases/pretrained-model)
-2. Place it inside the `runs/detect/` path of the project (if the folders doesn't exist, create them).
+```text
+runs/detect/train/weights/best.pt
+```
 
-Run the application:
+You can run the application directly:
 
 ```sh
 python3 main.py
@@ -56,47 +57,43 @@ python3 main.py
 
 ### Option 2: Train Your Own Model
 
-#### Configure Ultralytics Dataset Directory
+The dataset is already included in this repository at:
 
-Ultralytics uses a global dataset directory for storing datasets. You need to configure it before training:
+```text
+datasets/dices
+```
+
+To train the model you can use the YOLO CLI:
 
 ```sh
-yolo settings datasets_dir=/path/to/your/datasets
+yolo task=detect mode=train model=yolov8n.pt data=datasets/dices/data.yaml epochs=50 plots=True
 ```
 
 > [!Note]
-> This is where you will store all datasets for YOLO training.
-
-#### Download Dataset
-
-Download the dataset from [Releases](https://github.com/N3VERS4YDIE/dice-recognition/releases/dataset), decompress and place it inside your configured dataset directory.
-
-#### Train the Model
-
-Run the following command to start training:
-
-```sh
-python3 train.py
-```
+> You can customize the training process by for example modifying these opions:
+>
+> - **model**: YOLO model to use (e.g., `yolov8n.pt`, `yolov8s.pt`, etc.).
+> - **epochs**: Max training cycles.
+> - **patience**: Stop early if no improvement after this many epochs.
 
 Once training is complete, the best-trained model will be stored at:
 
-```
-runs/detect/train/weights/best.pt
+```text
+runs/detect/train2/weights/best.pt
 ```
 
-You can now use this model by modifying `main.py`:
+You can use this model by modifying `main.py`:
 
 ```python
-model = YOLO("runs/detect/train/weights/best.pt")
+model = YOLO("runs/detect/train2/weights/best.pt")
 ```
 
 > [!Note]
-> The `runs/detect/train/weights/best.pt` file is the best-trained model after training. If you train multiple times, new training folders (e.g., `train2`, `train3`, etc.) will be created, so you can choose the best model from any of them by modifying the path in `main.py`.
+> If you train multiple times, new training folders (e.g., `train2`, `train3`, etc.) will be created, so you can choose the best model from any of them by modifying the path in `main.py`.
 
 ## Usage
 
-Run the application:
+Simply run:
 
 ```sh
 python3 main.py
@@ -108,16 +105,20 @@ The script will detect dice, count them, and display the total sum in real-time.
 
 ```sh
 .
-├── main.py                # Runs the dice recognition model
-├── train.py               # Trains the model
-├── requirements.txt       # Project dependencies
-├── yolo12n.pt             # Base YOLO model for training
-├── runs/                  # Training outputs
+├── datasets/                # Contains the datasets for training
+│   └── dices/
+│       ├── data.yaml        # Dataset configuration file
+│       ├── test/            # Test dataset
+│       ├── train/           # Training dataset
+│       └── valid/           # Validation dataset
+├── main.py                  # Runs the dice recognition model
+├── requirements.txt         # Project dependencies
+├── runs/                    # Training outputs
 │   └── detect/
-│       ├── train/         # First training session
+│       ├── train/           # First training session
 │       │   ├── weights/
 │       │   │   ├── best.pt  # Best-trained model
-│       │   │   ├── last.pt  # Last epoch model
+└── yolov8n.pt               # Base YOLO model for training
 ```
 
 ## License

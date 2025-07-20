@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 6
+names: ['dice_1', 'dice_2', 'dice_3', 'dice_4', 'dice_5', 'dice_6']
+
+roboflow:
+  workspace: rune-zkmvl
+  project: rune55
+  version: 3
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/rune-zkmvl/rune55/dataset/3
